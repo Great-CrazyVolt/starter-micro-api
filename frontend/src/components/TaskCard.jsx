@@ -6,7 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 const TaskCard = ({ task, deleteTask, updateTask }) => {
     console.log(task)
     const [mouseIsOver, setMouseIsOver] = useState(false);
-    const [editMode, setEditMode] = useState(true);
+    // const [editMode, setEditMode] = useState(true);
     const {
         setNodeRef,
         attributes,
@@ -20,7 +20,7 @@ const TaskCard = ({ task, deleteTask, updateTask }) => {
             type: "Task",
             task,
         },
-        disabled: editMode,
+        // disabled: editMode,
     });
     const style = {
         transition,
@@ -28,7 +28,7 @@ const TaskCard = ({ task, deleteTask, updateTask }) => {
     };
 
     const toggleEditMode = () => {
-        setEditMode((prev) => !prev);
+        // setEditMode((prev) => !prev);
         setMouseIsOver(false);
     };
 
@@ -45,34 +45,34 @@ const TaskCard = ({ task, deleteTask, updateTask }) => {
         );
     }
 
-    if (editMode) {
-        return (
-            <div
-                ref={setNodeRef}
-                style={style}
-                {...attributes}
-                {...listeners}
-                className="bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative"
-            >
-                <textarea
-                    className="
-                        h-[90%]
-                        w-full resize-none border-none rounded text-black bg-transparent text-white focus:outline-none
-                    "
-                    value={task.content}
-                    autoFocus
-                    placeholder="Task content here"
-                    onBlur={toggleEditMode}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter" && e.shiftKey) {
-                            toggleEditMode();
-                        }
-                    }}
-                    onChange={(e) => updateTask(task.id, e.target.value)}
-                />
-            </div>
-        );
-    }
+    // if (editMode) {
+    //     return (
+    //         <div
+    //             ref={setNodeRef}
+    //             style={style}
+    //             {...attributes}
+    //             {...listeners}
+    //             className="bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative"
+    //         >
+    //             <textarea
+    //                 className="
+    //                     h-[90%]
+    //                     w-full resize-none border-none rounded text-black bg-transparent text-white focus:outline-none
+    //                 "
+    //                 value={task.content}
+    //                 autoFocus
+    //                 placeholder="Task content here"
+    //                 onBlur={toggleEditMode}
+    //                 onKeyDown={(e) => {
+    //                     if (e.key === "Enter" && e.shiftKey) {
+    //                         toggleEditMode();
+    //                     }
+    //                 }}
+    //                 onChange={(e) => updateTask(task.id, e.target.value)}
+    //             />
+    //         </div>
+    //     );
+    // }
 
     return (
         <div

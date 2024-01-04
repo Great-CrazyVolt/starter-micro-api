@@ -4,8 +4,9 @@ const { Schema, model } = require('mongoose')
 
 const attendanceSchema = new Schema({
     employeeID: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: "employee",
+        // required: true,
     }
 }, { timestamps: true })
 

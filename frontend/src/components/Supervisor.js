@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import {
     DndContext,
     DragEndEvent,
@@ -15,6 +15,7 @@ import { createPortal } from "react-dom";
 import Container from './Container';
 import PlusIcon from '../icons/PlusIcon';
 import TaskCard from './TaskCard';
+import axios from 'axios';
 
 const defaultCols = [
     {
@@ -100,15 +101,34 @@ const defaultTasks = [
     },
 ];
 
-const Supervisor = ({ employeeDetails }) => {
-    console.log(employeeDetails)
-    const [columns, setColumns] = useState(defaultCols);
-    const updatedTask = [
-        ...defaultTasks,
-        ...employeeDetails
-    ]
-    console.log(updatedTask)
+const GetPresentEmployeesURL = 'http://localhost:8000/employee/getPresentEmployees'
+const UpdateEmployeeColumnURL = 'http://localhost:8000/employee/updateEmployeeColumn'
+
+const Supervisor = () => {
+
+    const [employeeDetails, setEmployeeDetails] = useState([])
     const [tasks, setTasks] = useState(employeeDetails);
+
+    useEffect(() => {
+        axios.get(GetPresentEmployeesURL)
+            .then(response => {
+                const data = response.data
+                const empDetails = data.map((emp) => {
+                    const { employeeID } = emp
+                    return {
+                        ...employeeID,
+                        // columnId: "justComeIn",
+                        id: employeeID._id,
+                        content: employeeID.skills,
+                    }
+                })
+                setTasks(empDetails)
+            })
+            .catch(e => console.log(e))
+    }, [])
+
+
+    const [columns, setColumns] = useState(defaultCols);
 
     const [activeColumn, setActiveColumn] = useState(null);
 
@@ -169,6 +189,7 @@ const Supervisor = ({ employeeDetails }) => {
     function onDragStart(event) {
         if (event.active.data.current?.type === "Column") {
             setActiveColumn(event.active.data.current.column);
+            console.log(event.active.data.current.column)
             return;
         }
 
@@ -240,7 +261,18 @@ const Supervisor = ({ employeeDetails }) => {
         if (isActiveATask && isOverAColumn) {
             setTasks((tasks) => {
                 const activeIndex = tasks.findIndex((t) => t.id === activeId);
+                console.log(tasks[activeIndex])
+                const { _id } = tasks[activeIndex]
+                
+                const data = {
+                    columnId: overId,
+                    id: _id
+                }
 
+                axios.post(UpdateEmployeeColumnURL, data)
+                    .then((res) => console.log(res.data))
+                    .catch(e => console.log(e))
+                    
                 tasks[activeIndex].columnId = overId;
                 console.log("DROPPING TASK OVER COLUMN", { activeIndex });
                 return arrayMove(tasks, activeIndex, activeIndex);

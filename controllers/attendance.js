@@ -11,10 +11,10 @@ const markAttendance = async (req, res) => {
             employeeID: employeeID
         })
 
-        // if (employee) {
-        //     const attendance = new attendanceModel({ employeeID: employeeID })
-        //     attendance.save()
-        // }
+        if (employee) {
+            const attendance = new attendanceModel({ employeeID: employee._id })
+            await attendance.save()
+        }
 
         res.status(200).send(employee)
     } catch (error) {

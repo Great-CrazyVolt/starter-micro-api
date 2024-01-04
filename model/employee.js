@@ -52,6 +52,11 @@ const employeeSchema = new Schema({
     isHere: {
         type: String,
         required: true,
+    },
+    columnId: {
+        type: String,
+        required: true,
+        default: 'justComeIn'
     }
 })
 
