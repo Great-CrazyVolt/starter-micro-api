@@ -23,6 +23,22 @@ const markAttendance = async (req, res) => {
     }
 }
 
+const deleteAttendance = async (req, res) => {
+    try {
+        const { id } = req.body
+        const response = await attendanceModel.findOneAndDelete({ employeeID: id })
+        const update = await employeeModel.findByIdAndUpdate(id , { columnId: 'justComeIn' })
+        
+        if (response && update) {
+            res.status(200).send("Removed Successfully")
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error)
+    }
+}
+
 module.exports = {
-    markAttendance
+    markAttendance,
+    deleteAttendance
 }

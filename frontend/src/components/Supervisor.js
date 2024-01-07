@@ -103,6 +103,7 @@ const defaultTasks = [
 
 const GetPresentEmployeesURL = 'http://localhost:8000/employee/getPresentEmployees'
 const UpdateEmployeeColumnURL = 'http://localhost:8000/employee/updateEmployeeColumn'
+const deleteAttendanceURL = 'http://localhost:8000/attendance/deleteAttendance'
 
 const Supervisor = () => {
 
@@ -124,7 +125,7 @@ const Supervisor = () => {
                 })
                 setTasks(empDetails)
             })
-            .catch(e => console.log(e))
+        // .catch(e => console.log(e))
     }, [])
 
 
@@ -147,6 +148,7 @@ const Supervisor = () => {
     }
 
     function deleteTask(id) {
+        axios.post(deleteAttendanceURL, { id })
         const newTasks = tasks.filter((task) => task.id !== id);
         setTasks(newTasks);
     }
@@ -189,7 +191,7 @@ const Supervisor = () => {
     function onDragStart(event) {
         if (event.active.data.current?.type === "Column") {
             setActiveColumn(event.active.data.current.column);
-            console.log(event.active.data.current.column)
+            // console.log(event.active.data.current.column)
             return;
         }
 
@@ -214,7 +216,7 @@ const Supervisor = () => {
         const isActiveAColumn = active.data.current?.type === "Column";
         if (!isActiveAColumn) return;
 
-        console.log("DRAG END");
+        // console.log("DRAG END");
 
         setColumns((columns) => {
             const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
@@ -261,20 +263,20 @@ const Supervisor = () => {
         if (isActiveATask && isOverAColumn) {
             setTasks((tasks) => {
                 const activeIndex = tasks.findIndex((t) => t.id === activeId);
-                console.log(tasks[activeIndex])
+
                 const { _id } = tasks[activeIndex]
-                
+
                 const data = {
                     columnId: overId,
                     id: _id
                 }
 
                 axios.post(UpdateEmployeeColumnURL, data)
-                    .then((res) => console.log(res.data))
-                    .catch(e => console.log(e))
-                    
+                // .then((res) => console.log(res.data))
+                // .catch(e => console.log(e))
+
                 tasks[activeIndex].columnId = overId;
-                console.log("DROPPING TASK OVER COLUMN", { activeIndex });
+                // console.log("DROPPING TASK OVER COLUMN", { activeIndex });
                 return arrayMove(tasks, activeIndex, activeIndex);
             });
         }
@@ -294,7 +296,7 @@ const Supervisor = () => {
     )
 
     return (
-        <div className='m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden px-[40px]'>
+        <div className='bg-gray-100 m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden px-[40px]'>
             <DndContext
                 sensors={sensors}
                 onDragStart={onDragStart}

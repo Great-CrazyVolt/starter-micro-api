@@ -4,7 +4,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 const TaskCard = ({ task, deleteTask, updateTask }) => {
-    console.log(task)
+    // console.log(task)
     const [mouseIsOver, setMouseIsOver] = useState(false);
     // const [editMode, setEditMode] = useState(true);
     const {

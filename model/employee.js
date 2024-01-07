@@ -5,7 +5,6 @@ const { Schema, model } = require('mongoose')
 const employeeSchema = new Schema({
     employeeID: {
         type: String,
-        // ref: "attendance",
         required: true
     },
 
